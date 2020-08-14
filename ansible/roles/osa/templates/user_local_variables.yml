@@ -1,0 +1,16 @@
+---
+manila_install_method: distro
+
+manila_protocols:
+  - NFS
+  - CIFS
+
+manila_backends:
+  generic1:
+    driver_handles_share_servers: False
+    share_backend_name: generic1
+    share_driver: manila.share.drivers.generic.GenericShareDriver
+
+manila_default_store: generic1
+
+horizon_enable_manila_ui: true

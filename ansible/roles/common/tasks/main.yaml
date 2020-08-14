@@ -1,0 +1,52 @@
+- name: Add the osa user
+  become: yes
+  user:
+    name: osa
+    password: "$6$kolla$DaTk/.ds3trgfZcd9KGwF.HUDchsScJ9x1ctbP9wzMt5GCXDhze3UIH/zOmhD0VQE2WC9BCiEwlEH.3IJNU.Q0"
+    comment: OSA User
+    shell: /bin/bash
+    groups: wheel
+    append: yes
+    state: present
+
+- name: enable password ssh
+  become: yes
+  copy:
+    src: files/sshd_config
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: "0600"
+  register: ssh
+
+- name: restart ssh
+  become: yes
+  service:
+    name: sshd
+    state: restarted
+  when: ssh.changed
+
+- name: etc hosts entries
+  become: yes
+  template:
+    src: hosts.j2
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Install dependencies
+  become: yes
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - epel-release
+    # - dnf
+
+- name: Add usr local to path
+  become: yes
+  copy:
+    dest: /etc/profile.d/custom-path.sh
+    content: 'PATH=$PATH:/usr/local/bin'
+  # when: "'/usr/local/bin' not in lookup('env', 'PATH')"

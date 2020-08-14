@@ -1,0 +1,10 @@
+---
+- name: run manila playbook
+  become: yes
+  command: openstack-ansible playbooks/os-manila-install.yml
+  args:
+    chdir: /opt/openstack-ansible
+  tags:
+    - install_full
+    - install_manila
+    - install_additional_services

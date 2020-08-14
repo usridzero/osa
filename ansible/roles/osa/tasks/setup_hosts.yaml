@@ -1,0 +1,11 @@
+---
+- name: setup-hosts
+  become: yes
+  command: /usr/local/bin/openstack-ansible setup-hosts.yml
+  args:
+    chdir: /opt/openstack-ansible/playbooks
+  tags:
+    - install_full
+    - install_osa
+    - install_additional_services
+    - install_manila

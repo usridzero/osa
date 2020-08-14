@@ -1,0 +1,34 @@
+---
+- name: configure manila
+  become: yes
+  copy:
+    remote_src: yes
+    src: /opt/openstack-ansible/etc/openstack_deploy/conf.d/manila.yml.aio
+    dest: /etc/openstack_deploy/conf.d/manila.yml
+    owner: root
+    group: root
+    mode: 0644
+  tags:
+    - always
+
+- name: (hack to fix broken build) drop missing redhat vars file
+  become: yes
+  copy:
+    src: files/manila/redhat.vars.yml
+    dest: /etc/ansible/roles/os_manila/vars/redhat.yml
+    owner: root
+    group: root
+    mode: 0644
+  tags:
+    - always
+
+- name: ensure our local variables file is in place
+  become: yes
+  copy:
+    src: templates/user_local_variables.yml
+    dest: /etc/openstack_deploy/user_local_variables.yml
+    owner: root
+    group: root
+    mode: 0644
+  tags:
+    - always

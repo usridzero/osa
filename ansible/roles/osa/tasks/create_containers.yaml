@@ -1,0 +1,8 @@
+---
+- name: ensure we create the containers
+  become: yes
+  command: openstack-ansible playbooks/lxc-containers-create.yml
+  args:
+    chdir: /opt/openstack-ansible
+  tags:
+    - create_containers

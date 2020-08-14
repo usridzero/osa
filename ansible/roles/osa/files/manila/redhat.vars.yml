@@ -1,0 +1,42 @@
+# Common rpm packages
+manila_distro_packages:
+  - libffi-devel
+  - kmod-devel
+  - kmod-libs
+  - postgresql-devel
+  - libxslt-devel
+  - nfs-utils
+  - rpcbind
+  - rsync
+  - zlib-devel
+
+manila_service_distro_packages:
+  - openstack-manila
+  - python-manilaclient
+  - python2-shade
+  - systemd-python
+  - uwsgi
+  - uwsgi-plugin-python
+
+manila_devel_distro_packages:
+  - git
+  - systemd-devel
+
+manila_api_distro_packages: []
+manila_scheduler_distro_packages: []
+manila_share_distro_packages: []
+
+manila_share_deps_distro_packages:
+  - "qemu-img{% if ansible_distribution_major_version|int <= 7 %}-ev{% endif %}"
+
+manila_lvm_share_distro_packages:
+  - device-mapper-event
+  - lvm2
+  - parted
+
+manila_oslomsg_amqp1_distro_packages:
+  - cyrus-sasl-lib
+  - cyrus-sasl-plain
+  - cyrus-sasl-md5
+
+manila_uwsgi_bin: '/usr/sbin'

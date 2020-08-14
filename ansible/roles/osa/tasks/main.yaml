@@ -1,0 +1,39 @@
+---
+- include_tasks: prerun-hacks.yaml
+  tags:
+    - always
+
+# Put all additional services BELOW this line
+
+- include_tasks: manila.yaml
+  tags:
+    - install_full
+    - install_additional_services
+    - install_manila
+
+# Put all additional services ABOVE this line
+
+- name: setup-hosts
+  become: yes
+  command: /usr/local/bin/openstack-ansible setup-hosts.yml
+  args:
+    chdir: /opt/openstack-ansible/playbooks
+  tags:
+    - always
+
+- name: setup-infrastructure
+  become: yes
+  command: /usr/local/bin/openstack-ansible setup-infrastructure.yml
+  args:
+    chdir: /opt/openstack-ansible/playbooks
+  tags:
+    - always
+
+- name: setup-openstack
+  become: yes
+  command: /usr/local/bin/openstack-ansible setup-openstack.yml
+  args:
+    chdir: /opt/openstack-ansible/playbooks
+  tags:
+    - always
+  

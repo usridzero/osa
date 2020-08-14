@@ -1,0 +1,23 @@
+---
+- hosts: all
+  vars:
+    ansible_python_interpreter: "/usr/bin/python"
+  remote_user: vagrant
+  roles:
+    - common
+    
+- hosts: deployer
+  vars:
+    ansible_python_interpreter: "/usr/bin/python"
+  remote_user: vagrant
+  roles:
+    - deployer
+      
+
+- hosts: aio
+  vars:
+    ansible_python_interpreter: "/usr/bin/python"
+  remote_user: vagrant
+  roles:
+    - osa
+      

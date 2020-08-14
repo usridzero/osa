@@ -1,0 +1,6 @@
+.vagrant/
+logs/
+tmp/
+
+*.log
+*.vdi

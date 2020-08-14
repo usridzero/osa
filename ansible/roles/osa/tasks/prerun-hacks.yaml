@@ -1,0 +1,9 @@
+---
+- name: remove dragonflow
+  become: yes
+  lineinfile:
+    path: /etc/ansible/roles/os_neutron/vars/main.yml
+    regex: '^  - dragonflow'
+    state: absent
+  tags:
+    - always
