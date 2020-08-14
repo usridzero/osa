@@ -40,3 +40,7 @@
   tags:
     - always
   
+- include_tasks: additional_service_playbooks.yaml
+  tags:
+    - install_additional_services
+    - install_manila
