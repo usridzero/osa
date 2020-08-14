@@ -3,15 +3,16 @@ require 'tty-prompt'
 openstack_release = ENV["OPENSTACK_RELEASE"]
 ansible_tags = ENV["ANSIBLE_TAGS"]
 
-def get_ansible_tags()
+def get_ansible_tags(openstack_release)
   prompt = TTY::Prompt.new
   return prompt.multi_select("What would you like to do?") do |menu|
+    menu.default 1
     menu.choice "Full Install", "install_full"
-    menu.choice "Bootstrap VM", "bootstrap"
-    menu.choice "Run OSA Setup Playbooks", "install_osa"
-    menu.choice "Rerun 'LXC Create Containers'", "create_containers"
-    menu.choice "Install All Additional Services", "install_additional_services"
-    menu.choice "Install Additional Service: Manila", "install_manila"
+
+    # Manila not available in rocky
+    if openstack_release != "rocky"
+      menu.choice "Install Additional Service: Manila", "install_manila"
+    end
   end
 end
 
@@ -30,9 +31,9 @@ if openstack_release.nil?
 end
 
 if ARGV.include?("--provision")
-  ansible_tags = get_ansible_tags()
+  ansible_tags = get_ansible_tags(openstack_release)
 elsif ARGV.include?("up")
-  ansible_tags = get_ansible_tags()
+  ansible_tags = get_ansible_tags(openstack_release)
 end
 
 Vagrant.configure("2") do |config|
@@ -92,7 +93,6 @@ Vagrant.configure("2") do |config|
           ansible.playbook = "ansible/playbook.yaml"
           ansible.groups = {
             "aio" => ["machine-#{openstack_release}-1"],
-            "deployer" => ["machine-#{openstack_release}-1"],
           }
           ansible.extra_vars = {
             "openstack_release" => openstack_release,

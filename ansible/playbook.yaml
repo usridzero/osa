@@ -5,14 +5,8 @@
   remote_user: vagrant
   roles:
     - common
-    
-- hosts: deployer
-  vars:
-    ansible_python_interpreter: "/usr/bin/python"
-  remote_user: vagrant
-  roles:
-    - deployer
-      
+  tags:
+    - always
 
 - hosts: aio
   vars:
