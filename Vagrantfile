@@ -1,7 +1,10 @@
 require 'tty-prompt'
 
 openstack_release = ENV["OPENSTACK_RELEASE"]
-ansible_tags = ENV["ANSIBLE_TAGS"]
+
+if !ENV["ANSIBLE_TAGS"].nil?
+  ansible_tags = ENV["ANSIBLE_TAGS"].split(",")
+end
 
 def get_ansible_tags(openstack_release)
   prompt = TTY::Prompt.new
@@ -28,12 +31,15 @@ end
 
 if openstack_release.nil?
   openstack_release = get_openstack_release()
+  ENV["OPENSTACK_RELEASE"] = openstack_release
 end
 
-if ARGV.include?("--provision")
+if ARGV.include?("--provision") && ansible_tags.nil?
   ansible_tags = get_ansible_tags(openstack_release)
-elsif ARGV.include?("up")
+  ENV["ANSIBLE_TAGS"] = ansible_tags.join(",")
+elsif ARGV.include?("up") && ansible_tags.nil?
   ansible_tags = get_ansible_tags(openstack_release)
+  ENV["ANSIBLE_TAGS"] = ansible_tags.join(",")
 end
 
 Vagrant.configure("2") do |config|
