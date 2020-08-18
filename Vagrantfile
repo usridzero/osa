@@ -53,17 +53,29 @@ Vagrant.configure("2") do |config|
       # If we end up running multiple releases next to each other, make sure networking does not collide
       if openstack_release.to_s.downcase == 'rocky'
         third_octect = "239"
+        port_http   = 8080
+        port_https  = 8443
       elsif openstack_release.to_s.downcase == 'stein'
         third_octect = "240"
+        port_http   = 8081
+        port_https  = 8444
       elsif openstack_release.to_s.downcase == 'train'
         third_octect = "241"
+        port_http   = 8082
+        port_https  = 8445
       elsif openstack_release.to_s.downcase == 'ussuri'
         third_octect = "242"
+        port_http   = 8083
+        port_https  = 8446
       else
         third_octect = "243"
+        port_http   = 8084
+        port_https  = 8447
       end
 
       machine.vm.network "private_network", ip: "192.168.#{third_octect}.#{10 + machine_id}"
+      machine.vm.network "forwarded_port", guest: 80, host: port_http
+      machine.vm.network "forwarded_port", guest: 443, host: port_https
 
       machine.vm.provider "virtualbox" do |vb|
         # ----------------------------------------------------------
