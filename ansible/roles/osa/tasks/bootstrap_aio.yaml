@@ -14,6 +14,8 @@
     - openssl-devel
     - git
     - sshpass
+  tags:
+    - always
 
 - name: Create openstack-ansible dir
   become: yes
@@ -23,6 +25,8 @@
     owner: vagrant
     group: vagrant
     mode: "0755"
+  tags:
+    - always
 
 - name: get osa {{ openstack_release }}
   git:
@@ -30,12 +34,16 @@
     dest: /opt/openstack-ansible
     version: "stable/{{ openstack_release }}"
     force: yes
+  tags:
+    - always
 
 - name: bootstrap ansible
   become: yes
   command: scripts/bootstrap-ansible.sh
   args:
     chdir: /opt/openstack-ansible
+  tags:
+    - always
 
 - name: Create a symbolic link to ansible
   become: yes
@@ -45,6 +53,8 @@
     owner: vagrant
     group: vagrant
     state: link
+  tags:
+    - always
 
 - name: Create a symbolic link to ansible-playbook
   become: yes
@@ -54,6 +64,8 @@
     owner: vagrant
     group: vagrant
     state: link
+  tags:
+    - always
 
 - name: bootstrap aio
   become: yes
@@ -63,4 +75,4 @@
   environment:
     BOOTSTRAP_OPTS: bootstrap_host_data_disk_device=sdb
   tags:
-    - bootstrap_aio
+    - always
