@@ -29,7 +29,7 @@ def get_openstack_release()
   end
 end
 
-if openstack_release.nil?
+if openstack_release.nil? && !ARGV.include?("box")
   openstack_release = get_openstack_release()
   ENV["OPENSTACK_RELEASE"] = openstack_release
 end
@@ -80,7 +80,7 @@ Vagrant.configure("2") do |config|
         # Disks
         # ----------------------------------------------------------
         (0..0).each do |disk_id|
-          disk = "./tmp/machine-#{openstack_release}-#{machine_id}-osd#{disk_id}.vdi"
+          disk = "tmp/machine-#{openstack_release}-#{machine_id}-osd#{disk_id}.vdi"
           size = 100 * 1024
           unless File.exist?(disk)
             vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', size]
