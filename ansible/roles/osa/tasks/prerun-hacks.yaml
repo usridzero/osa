@@ -1,5 +1,5 @@
 ---
-- name: remove dragonflow
+- name: remove dragonflow (should only run on Rocky)
   become: yes
   lineinfile:
     path: /etc/ansible/roles/os_neutron/vars/main.yml
