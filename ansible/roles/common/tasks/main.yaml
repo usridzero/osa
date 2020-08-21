@@ -42,11 +42,10 @@
     state: latest
   loop:
     - epel-release
-    # - dnf
 
 - name: Add usr local to path
   become: yes
   copy:
     dest: /etc/profile.d/custom-path.sh
     content: 'PATH=$PATH:/usr/local/bin'
-  # when: "'/usr/local/bin' not in lookup('env', 'PATH')"
+  when: "'/usr/local/bin' not in lookup('env', 'PATH')"

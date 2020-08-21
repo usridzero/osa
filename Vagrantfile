@@ -9,13 +9,21 @@ end
 def get_ansible_tags(openstack_release)
   prompt = TTY::Prompt.new
   return prompt.multi_select("What would you like to do?") do |menu|
-    menu.default 1
-    menu.choice "Full Install", "install_full"
+    # menu.default 1
+    # menu.choice "Full Install", "install_full"
+    
+    menu.choice "First run actions (bootstrap_aio, setup_hosts, setup_infrastructure, setup_openstack)", "first_run"
+    menu.choice "DO NOT RUN: Boostrap AIO", "bootstrap_aio"
+    menu.choice "DO NOT RUN: setup_hosts", "setup_hosts"
+    menu.choice "DO NOT RUN: setup_infrastructure", "setup_infrastructure"
+    menu.choice "DO NOT RUN: setup_openstack", "setup_openstack"
+    menu.choice "Create containers", "create_containers"
 
     # Manila not available in rocky
     if openstack_release != "rocky"
       menu.choice "Install Additional Service: Manila", "install_manila"
     end
+
   end
 end
 
@@ -103,6 +111,7 @@ Vagrant.configure("2") do |config|
 
       # Only execute once the Ansible provisioner,
       # when all the machines are up and ready.
+      puts("Ansible will run with tags: ", ansible_tags)
       if machine_id == N
         machine.vm.provision :ansible do |ansible|
           # Disable default limit to connect to all the machines

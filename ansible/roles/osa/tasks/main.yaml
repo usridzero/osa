@@ -1,18 +1,22 @@
 ---
 - include_tasks: bootstrap_aio.yaml
   tags:
-    - always
+  - first_run
+  - bootstrap_aio
     
-- include_tasks: prerun-hacks.yaml
+- include_tasks: prerun_hacks.yaml
   tags:
-    - always
+  - always
+
+- include_tasks: create_containers.yaml
+  tags:
+  - create_containers
 
 # Put all additional services BELOW this line
 
 - include_tasks: manila.yaml
   tags:
-    - install_additional_services
-    - install_manila
+  - install_manila
 
 # Put all additional services ABOVE this line
 
@@ -22,7 +26,8 @@
   args:
     chdir: /opt/openstack-ansible/playbooks
   tags:
-    - always
+    - first_run
+    - setup_hosts
 
 - name: setup-infrastructure
   become: yes
@@ -30,7 +35,8 @@
   args:
     chdir: /opt/openstack-ansible/playbooks
   tags:
-    - always
+    - first_run
+    - setup_infrastructure
 
 - name: setup-openstack
   become: yes
@@ -38,9 +44,13 @@
   args:
     chdir: /opt/openstack-ansible/playbooks
   tags:
-    - always
+    - first_run
+    - setup_openstack
   
-- include_tasks: additional_service_playbooks.yaml
+- name: run os-manila-install playbook
+  become: yes
+  command: openstack-ansible playbooks/os-manila-install.yml
+  args:
+    chdir: /opt/openstack-ansible
   tags:
-    - install_additional_services
     - install_manila
