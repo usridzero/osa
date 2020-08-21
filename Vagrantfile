@@ -18,6 +18,7 @@ def get_ansible_tags(openstack_release)
     menu.choice "DO NOT RUN: setup_infrastructure", "setup_infrastructure"
     menu.choice "DO NOT RUN: setup_openstack", "setup_openstack"
     menu.choice "Create containers", "create_containers"
+    menu.choice "HAProxy Config Update", "haproxy_config"
 
     # Manila not available in rocky
     if openstack_release != "rocky"

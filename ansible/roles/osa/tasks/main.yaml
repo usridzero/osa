@@ -46,6 +46,11 @@
   tags:
     - first_run
     - setup_openstack
+
+- include_tasks: haproxy_config.yaml
+  tags:
+    - haproxy_config
+    - install_manila
   
 - name: run os-manila-install playbook
   become: yes

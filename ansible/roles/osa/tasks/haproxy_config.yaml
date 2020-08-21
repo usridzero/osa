@@ -1,0 +1,10 @@
+---
+- name: run haproxy-install playbook with tags for config only
+  become: yes
+  command: openstack-ansible haproxy-install.yml --tags=haproxy-config
+  args:
+    chdir: /opt/openstack-ansible/playbooks
+  tags:
+    - haproxy_config
+    - install_manila
+  
