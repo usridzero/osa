@@ -8,10 +8,6 @@
   tags:
   - always
 
-- include_tasks: create_containers.yaml
-  tags:
-  - create_containers
-
 # Put all additional services BELOW this line
 
 - include_tasks: manila.yaml
@@ -19,6 +15,10 @@
   - install_manila
 
 # Put all additional services ABOVE this line
+
+- include_tasks: create_containers.yaml
+  tags:
+  - create_containers
 
 - name: setup-hosts
   become: yes
