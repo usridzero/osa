@@ -6,3 +6,4 @@
     chdir: /opt/openstack-ansible
   tags:
     - create_containers
+    - install_manila

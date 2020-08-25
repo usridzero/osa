@@ -5,6 +5,4 @@
   args:
     chdir: /opt/openstack-ansible
   tags:
-    - install_full
     - install_manila
-    - install_additional_services

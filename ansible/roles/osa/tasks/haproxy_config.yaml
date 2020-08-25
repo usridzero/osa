@@ -6,5 +6,5 @@
     chdir: /opt/openstack-ansible/playbooks
   tags:
     - haproxy_config
-    - install_manila
+    - install_additional_services
   

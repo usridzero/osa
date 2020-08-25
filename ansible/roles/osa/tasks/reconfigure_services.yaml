@@ -1,0 +1,18 @@
+---
+- name: run manila playbook with config tag
+  become: yes
+  command: openstack-ansible playbooks/os-manila-install.yml --tags manila-config
+  args:
+    chdir: /opt/openstack-ansible
+  tags:
+    - reconfigure_services
+    - reconfigure_manila
+    - manila-config
+
+- name: run horizon playbook with config tag
+  become: yes
+  command: openstack-ansible playbooks/os-horizon-install.yml --tags horizon-config
+  args:
+    chdir: /opt/openstack-ansible
+  tags:
+    - reconfigure_services

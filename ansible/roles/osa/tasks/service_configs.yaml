@@ -1,0 +1,4 @@
+---
+- include_tasks: service_configs/manila.yaml
+  tags:
+    - install_manila

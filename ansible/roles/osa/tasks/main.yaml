@@ -3,22 +3,30 @@
   tags:
   - first_run
   - bootstrap_aio
-    
+
+- name: copy our custom user variables
+  become: yes
+  copy:
+    src: templates/user_local_variables.yaml
+    dest: /etc/openstack_deploy/user_local_variables.yml
+    owner: root
+    group: root
+    mode: 0644
+  tags:
+    - always
+
 - include_tasks: prerun_hacks.yaml
   tags:
   - always
 
-# Put all additional services BELOW this line
-
-- include_tasks: manila.yaml
+- include_tasks: service_configs.yaml
   tags:
-  - install_manila
-
-# Put all additional services ABOVE this line
+  - install_additional_services
 
 - include_tasks: create_containers.yaml
   tags:
   - create_containers
+  - install_additional_services
 
 - name: setup-hosts
   become: yes
@@ -50,12 +58,14 @@
 - include_tasks: haproxy_config.yaml
   tags:
     - haproxy_config
-    - install_manila
+    - install_additional_services
   
-- name: run os-manila-install playbook
-  become: yes
-  command: openstack-ansible playbooks/os-manila-install.yml
-  args:
-    chdir: /opt/openstack-ansible
+- include_tasks: additional_services.yaml
   tags:
-    - install_manila
+    - install_additional_services
+
+- include_tasks: reconfigure_services.yaml
+  tags:
+    - reconfigure_services
+    - reconfigure_manila
+    - manila-config

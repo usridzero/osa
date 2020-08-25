@@ -13,17 +13,19 @@ def get_ansible_tags(openstack_release)
     # menu.choice "Full Install", "install_full"
     
     menu.choice "First run actions (bootstrap_aio, setup_hosts, setup_infrastructure, setup_openstack)", "first_run"
-    menu.choice "DO NOT RUN: Boostrap AIO", "bootstrap_aio"
-    menu.choice "DO NOT RUN: setup_hosts", "setup_hosts"
-    menu.choice "DO NOT RUN: setup_infrastructure", "setup_infrastructure"
-    menu.choice "DO NOT RUN: setup_openstack", "setup_openstack"
-    menu.choice "Create containers", "create_containers"
-    menu.choice "HAProxy Config Update", "haproxy_config"
-
+    
     # Manila not available in rocky
     if openstack_release != "rocky"
-      menu.choice "Install Additional Service: Manila", "install_manila"
+      menu.choice "Install Additional Service: Manila", ["install_manila", "install_additional_services"]
     end
+    menu.choice "Reconfigure Services", "reconfigure_services"
+    menu.choice "------- TOOLS -------", disabled: ""
+    menu.choice "Create containers", "create_containers"
+    menu.choice "HAProxy Config Update", "haproxy_config"
+    menu.choice "Boostrap AIO", "bootstrap_aio"
+    menu.choice "Setup Hosts", "setup_hosts"
+    menu.choice "Setup Infrastructure", "setup_infrastructure"
+    menu.choice "Setup Openstack", "setup_openstack"
 
   end
 end
@@ -43,7 +45,7 @@ if openstack_release.nil? && !ARGV.include?("box")
   ENV["OPENSTACK_RELEASE"] = openstack_release
 end
 
-if ARGV.include?("--provision") && ansible_tags.nil?
+if (ARGV.include?("provision") || ARGV.include?("--provision")) && ansible_tags.nil?
   ansible_tags = get_ansible_tags(openstack_release)
   ENV["ANSIBLE_TAGS"] = ansible_tags.join(",")
 elsif ARGV.include?("up") && ansible_tags.nil?

@@ -1,6 +1,12 @@
 ---
-manila_install_method: distro
+# Global install method
+install_method: source
 
+# Horizon 
+horizon_enable_manila_ui: True
+horizon_keystone_multidomain_support: True
+
+# Manila
 manila_protocols:
   - NFS
   - CIFS
@@ -12,5 +18,3 @@ manila_backends:
     share_driver: manila.share.drivers.generic.GenericShareDriver
 
 manila_default_store: generic1
-
-horizon_enable_manila_ui: true
