@@ -56,10 +56,10 @@ end
 Vagrant.configure("2") do |config|
   N = 1
   (1..N).each do |machine_id|
-    config.vm.define "machine-#{openstack_release}-#{machine_id}" do |machine|
+    config.vm.define "#{openstack_release}#{machine_id}" do |machine|
       machine.vm.box = "centos7:2004"
       machine.vm.synced_folder '.', '/vagrant', disabled: true
-      machine.vm.hostname = "machine-#{openstack_release}-#{machine_id}"
+      machine.vm.hostname = "#{openstack_release}#{machine_id}"
 
       # If we end up running multiple releases next to each other, make sure networking does not collide
       if openstack_release.to_s.downcase == 'rocky'
@@ -122,7 +122,7 @@ Vagrant.configure("2") do |config|
           ansible.limit = "all"
           ansible.playbook = "ansible/playbook.yaml"
           ansible.groups = {
-            "aio" => ["machine-#{openstack_release}-1"],
+            "aio" => ["#{openstack_release}1"],
           }
           ansible.extra_vars = {
             "openstack_release" => openstack_release,

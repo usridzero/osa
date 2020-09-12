@@ -1,0 +1,56 @@
+---
+- name: replace aio1 inventory names with our real machine name
+  become: yes
+  replace:
+    path: /opt/openstack-ansible/etc/openstack_deploy/openstack_user_config.yml.aio
+    regexp: "aio1:"
+    replace: "{{ ansible_hostname }}:"
+  tags:
+    - always
+
+- name: replace aio1 inventory names in the template with our real machine name
+  become: yes
+  replace:
+    path: /opt/openstack-ansible/etc/openstack_deploy/openstack_user_config.yml.aio.j2
+    regexp: "aio1:"
+    replace: "{{ ansible_hostname }}:"
+  tags:
+    - always
+
+- name: replace aio1 inventory names in the nspawn template with our real machine name
+  become: yes
+  replace:
+    path: /opt/openstack-ansible/etc/openstack_deploy/openstack_user_config.yml.aio-nspawn.j2
+    regexp: "aio1:"
+    replace: "{{ ansible_hostname }}:"
+  tags:
+    - always
+
+- name: replace aio1 hostname with our real machine name
+  become: yes
+  replace:
+    path: /opt/openstack-ansible/tests/roles/bootstrap-host/tasks/prepare_hostname.yml
+    regexp: "aio1"
+    replace: "{{ ansible_hostname }}"
+  tags:
+    - always
+
+- name: find all conf.d files that need aio hostname update
+  become: yes
+  find:
+    paths: "/opt/openstack-ansible/etc/openstack_deploy/conf.d/"
+    patterns: "*.aio"
+  register: aio_files
+  tags:
+    - always
+
+- name: replace aio1 inventory names with our real machine name in conf.d folder
+  become: yes
+  replace:
+    path: "{{ item.path }}"
+    regexp: "aio1:"
+    replace: "{{ ansible_hostname }}:"
+  loop: "{{ aio_files.files }}"
+  tags:
+    - always
+    

@@ -16,6 +16,16 @@
     - sshpass
   tags:
     - always
+  
+- name: HACK - Install dependencies openstack-ansible misses
+  become: yes
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - systemd-devel
+  tags:
+    - always
 
 - name: Create openstack-ansible dir
   become: yes
@@ -34,6 +44,10 @@
     dest: /opt/openstack-ansible
     version: "stable/{{ openstack_release }}"
     force: yes
+  tags:
+    - always
+
+- include_tasks: hostname_fix.yaml
   tags:
     - always
 
