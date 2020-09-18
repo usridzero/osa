@@ -18,6 +18,7 @@ def get_ansible_tags(openstack_release)
     if openstack_release != "rocky"
       menu.choice "Install Additional Service: Manila", ["install_manila", "install_additional_services"]
     end
+    menu.choice "Install Ceph", ["install_ceph", "install_additional_services"]
     menu.choice "Reconfigure Services", "reconfigure_services"
     menu.choice "------- TOOLS -------", disabled: ""
     menu.choice "Create containers", "create_containers"
@@ -45,10 +46,7 @@ if openstack_release.nil? && !ARGV.include?("box")
   ENV["OPENSTACK_RELEASE"] = openstack_release
 end
 
-if (ARGV.include?("provision") || ARGV.include?("--provision")) && ansible_tags.nil?
-  ansible_tags = get_ansible_tags(openstack_release)
-  ENV["ANSIBLE_TAGS"] = ansible_tags.join(",")
-elsif ARGV.include?("up") && ansible_tags.nil?
+if (ARGV.include?("up") || (ARGV.include?("provision") || ARGV.include?("--provision"))) && ansible_tags.nil?
   ansible_tags = get_ansible_tags(openstack_release)
   ENV["ANSIBLE_TAGS"] = ansible_tags.join(",")
 end
@@ -85,6 +83,7 @@ Vagrant.configure("2") do |config|
       end
 
       machine.vm.network "private_network", ip: "192.168.#{third_octect}.#{10 + machine_id}"
+      machine.vm.network "private_network", ip: "10.254.#{third_octect}.#{10 + machine_id}"
       machine.vm.network "forwarded_port", guest: 80, host: port_http
       machine.vm.network "forwarded_port", guest: 443, host: port_https
 
@@ -102,19 +101,40 @@ Vagrant.configure("2") do |config|
         # ----------------------------------------------------------
         # Disks
         # ----------------------------------------------------------
-        (0..0).each do |disk_id|
+
+        # Create a storage controller
+        vb.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata', '--controller', 'IntelAHCI']
+
+        # Add disks to the controler
+        (0..2).each do |disk_id|
           disk = "tmp/machine-#{openstack_release}-#{machine_id}-osd#{disk_id}.vdi"
-          size = 100 * 1024
+          
+          # If our install drive, make 100G, else make 5G
+          if disk_id == 0
+            size = 100 * 1024
+          else
+            size = 5 * 1024
+          end
+
+          # Create the disk in VB if needed
           unless File.exist?(disk)
             vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', size]
           end
-          vb.customize ['storageattach', :id,  '--storagectl', 'IDE', '--port', disk_id, '--device', 1, '--type', 'hdd', '--medium', disk]
+
+          # Attach the disk to the storage controller we created
+          vb.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', disk_id, '--device', 0, '--type', 'hdd', '--medium', disk]
         end
       end
 
       # Only execute once the Ansible provisioner,
       # when all the machines are up and ready.
-      puts("Ansible will run with tags: ", ansible_tags)
+      if ansible_tags.nil? || ansible_tags.empty?
+        puts("Running with no supplimental ansible tags")
+      else
+        puts("Ansible will run with tags: ", ansible_tags)
+      end
+
+      # We only want to run ansible provisioning once
       if machine_id == N
         machine.vm.provision :ansible do |ansible|
           # Disable default limit to connect to all the machines

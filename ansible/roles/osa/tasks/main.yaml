@@ -7,11 +7,13 @@
 - name: copy our custom user variables
   become: yes
   copy:
-    src: templates/user_local_variables.yaml
-    dest: /etc/openstack_deploy/user_local_variables.yml
+    src: "{{ item }}"
+    dest: /etc/openstack_deploy/
     owner: root
     group: root
     mode: 0644
+  with_fileglob:
+    - roles/osa/templates/user_variables_*.yml
   tags:
     - always
 
@@ -55,11 +57,6 @@
     - first_run
     - setup_openstack
 
-- include_tasks: haproxy_config.yaml
-  tags:
-    - haproxy_config
-    - install_additional_services
-  
 - include_tasks: additional_services.yaml
   tags:
     - install_additional_services
@@ -69,3 +66,8 @@
     - reconfigure_services
     - reconfigure_manila
     - manila-config
+
+- include_tasks: haproxy_config.yaml
+  tags:
+    - haproxy_config
+    - install_additional_services

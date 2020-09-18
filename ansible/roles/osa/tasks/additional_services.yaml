@@ -1,4 +1,60 @@
 ---
+- name: run ceph playbook
+  become: yes
+  command: openstack-ansible playbooks/ceph-install.yml
+  args:
+    chdir: /opt/openstack-ansible
+  tags:
+    - install_ceph
+
+- name: run ceph rgw playbook
+  become: yes
+  command: openstack-ansible playbooks/ceph-rgw-install.yml
+  args:
+    chdir: /opt/openstack-ansible
+  tags:
+    - install_ceph
+  
+- name: run ceph rgw keystone playbook
+  become: yes
+  command: openstack-ansible playbooks/ceph-rgw-keystone-setup.yml
+  args:
+    chdir: /opt/openstack-ansible
+  tags:
+    - install_ceph
+
+- name: copy ceph-nfs-install.yml playbook
+  become: yes
+  copy:
+    src: "files/ceph/ceph-nfs-install.yml"
+    dest: /opt/openstack-ansible/playbooks
+    owner: root
+    group: root
+    mode: 0644
+    force: no
+  tags:
+    - install_ceph
+
+- name: copy ceph_ansible.yml variables file
+  become: yes
+  copy:
+    src: "files/ceph/ceph_ansible.yml"
+    dest: /opt/openstack-ansible/playbooks/defaults
+    owner: root
+    group: root
+    mode: 0644
+    force: no
+  tags:
+    - install_ceph
+
+- name: run ceph nfs playbook
+  become: yes
+  command: openstack-ansible playbooks/ceph-nfs-install.yml
+  args:
+    chdir: /opt/openstack-ansible
+  tags:
+    - install_ceph
+
 - name: run manila playbook
   become: yes
   command: openstack-ansible playbooks/os-manila-install.yml

@@ -1,0 +1,11 @@
+---
+- name: add openstack-ansible conf.d file for ceph
+  become: yes
+  copy:
+    src: templates/conf.d/ceph.yml
+    dest: /etc/openstack_deploy/conf.d/ceph.yml
+    owner: root
+    group: root
+    mode: 0644
+  tags:
+    - install_ceph

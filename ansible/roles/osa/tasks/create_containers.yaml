@@ -7,3 +7,4 @@
   tags:
     - create_containers
     - install_manila
+    - install_ceph

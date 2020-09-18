@@ -1,4 +1,8 @@
 ---
+- include_tasks: service_configs/ceph.yaml
+  tags:
+    - install_ceph
+    
 - include_tasks: service_configs/manila.yaml
   tags:
     - install_manila

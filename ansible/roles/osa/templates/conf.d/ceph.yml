@@ -1,0 +1,10 @@
+---
+ceph-mon_hosts:
+  stein1:
+    ip: 172.29.236.100
+ceph-rgw_hosts:
+  stein1:
+    ip: 172.29.236.100
+ceph-nfs_hosts:
+  stein1:
+    ip: 172.29.236.100

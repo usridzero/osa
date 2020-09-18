@@ -9,7 +9,7 @@
     group: root
     mode: 0644
   tags:
-    - always
+    - install_manila
 
 - name: (hack to fix broken build) drop missing redhat vars file
   become: yes
@@ -20,4 +20,4 @@
     group: root
     mode: 0644
   tags:
-    - always
+    - install_manila

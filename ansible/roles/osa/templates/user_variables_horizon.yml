@@ -1,0 +1,3 @@
+# Horizon
+horizon_keystone_multidomain_support: True
+horizon_enable_manila_ui: True
