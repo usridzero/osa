@@ -8,7 +8,7 @@ end
 
 def get_ansible_tags(openstack_release)
   prompt = TTY::Prompt.new
-  return prompt.multi_select("What would you like to do?") do |menu|
+  return prompt.multi_select("What would you like to do?", per_page: 12) do |menu|
     # menu.default 1
     # menu.choice "Full Install", "install_full"
     

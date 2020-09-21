@@ -1,3 +1,5 @@
+---
+osa_cinder_config_version: 1.2.0 # This is a dummy variable to enable "empty" service config files
 # cinder_ceph_client: cinder
 # cinder_default_volume_type: RBD
 

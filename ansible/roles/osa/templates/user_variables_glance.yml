@@ -1,3 +1,5 @@
+---
+osa_glance_config_version: 1.2.0 # This is a dummy variable to enable "empty" service config files
 # glance_ceph_client: glance
 # glance_default_store: rbd
 # glance_rbd_store_pool: images

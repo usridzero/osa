@@ -1,1 +1,3 @@
+---
+osa_nova_config_version: 1.2.0 # This is a dummy variable to enable "empty" service config files
 # nova_libvirt_images_rbd_pool: vms
