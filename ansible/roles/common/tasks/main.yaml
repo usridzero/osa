@@ -35,6 +35,13 @@
     group: root
     mode: "0644"
 
+- name: fix yum issues with caching and sqlite
+  become: yes
+  lineinfile:
+    path: /etc/yum.conf
+    regexp: '^http_caching='
+    line: http_caching=packages
+    
 - name: Install dependencies
   become: yes
   yum:

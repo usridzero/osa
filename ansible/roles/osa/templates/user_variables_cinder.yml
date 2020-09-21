@@ -1,0 +1,13 @@
+# cinder_ceph_client: cinder
+# cinder_default_volume_type: RBD
+
+# cinder_backends:
+#   RBD:
+#     volume_driver: cinder.volume.drivers.rbd.RBDDriver
+#     rbd_pool: volumes
+#     rbd_ceph_conf: /etc/ceph/ceph.conf
+#     rbd_store_chunk_size: 8
+#     volume_backend_name: rbddriver
+#     rbd_user: "{{ cinder_ceph_client }}"
+#     rbd_secret_uuid: "{{ cinder_ceph_client_uuid }}"
+#     report_discard_supported: true

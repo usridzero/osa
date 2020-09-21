@@ -1,0 +1,3 @@
+# glance_ceph_client: glance
+# glance_default_store: rbd
+# glance_rbd_store_pool: images
