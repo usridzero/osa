@@ -106,7 +106,7 @@ Vagrant.configure("2") do |config|
         # vb.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata', '--controller', 'IntelAHCI']
 
         # Add disks to the controler
-        (0..2).each do |disk_id|
+        (0..4).each do |disk_id|
           disk = "tmp/machine-#{openstack_release}-#{machine_id}-osd#{disk_id}.vdi"
           
           # If our install drive, make 100G, else make 5G
@@ -152,6 +152,7 @@ Vagrant.configure("2") do |config|
             "openstack_release" => openstack_release,
           }
           ansible.tags = ansible_tags
+          ansible.raw_ssh_args = ['-o ServerAliveInterval=30']
         end
       end
     end

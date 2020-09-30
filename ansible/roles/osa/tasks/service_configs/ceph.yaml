@@ -9,3 +9,11 @@
     mode: 0644
   tags:
     - install_ceph
+
+- name: replace inventory/env.d/ceph.yml
+  copy:
+    src: ceph/inventory/env.d/ceph.yml
+    dest: /opt/openstack-ansible/inventory/env.d/ceph.yml
+    mode: '0664'
+  tags:
+    - install_ceph

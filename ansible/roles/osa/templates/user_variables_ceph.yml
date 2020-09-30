@@ -1,4 +1,6 @@
 ---
+mds_group_name: ceph-mds  
+
 # monitor_interface: eth1
 # radosgw_interface: "{{ monitor_interface }}"
 
@@ -15,3 +17,11 @@ journal_size: 100
 osd_scenario: collocated
 pool_default_pg_num: 16
 openstack_config: true # Ceph ansible automatically creates pools & keys
+
+devices:
+  - '/dev/sdc'
+  - '/dev/sdd'
+
+ceph_conf_overrides:
+  global:
+    osd_pool_default_size: 1

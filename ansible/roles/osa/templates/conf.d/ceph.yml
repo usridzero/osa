@@ -11,3 +11,6 @@ ceph-mds_hosts:
 ceph-nfs_hosts:
   stein1:
     ip: 172.29.236.100
+ceph-osd_hosts:
+  stein1:
+    ip: 172.29.236.100
