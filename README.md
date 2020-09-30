@@ -41,3 +41,6 @@ You can access the UI using your host computer's browser: `localhost:<port>` or 
 #### Any other
 * HTTP: 8084
 * HTTPS: 8447
+
+## Tips and Tricks
+* Get admin password for keystone: `sudo cat /etc/openstack_deploy/user_secrets.yml | grep keystone_auth_admin_password | awk '{print $2}'`

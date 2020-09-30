@@ -103,7 +103,7 @@ Vagrant.configure("2") do |config|
         # ----------------------------------------------------------
 
         # Create a storage controller
-        vb.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata', '--controller', 'IntelAHCI']
+        # vb.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata', '--controller', 'IntelAHCI']
 
         # Add disks to the controler
         (0..2).each do |disk_id|
@@ -118,6 +118,10 @@ Vagrant.configure("2") do |config|
 
           # Create the disk in VB if needed
           unless File.exist?(disk)
+            # Create a storage controller when we create our first disk
+            if disk_id == 0
+              vb.customize ['storagectl', :id, '--name', 'SATA Controller', '--add', 'sata', '--controller', 'IntelAHCI']
+            end
             vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', size]
           end
 
