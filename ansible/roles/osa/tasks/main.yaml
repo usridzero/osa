@@ -25,11 +25,6 @@
   tags:
   - install_additional_services
 
-- include_tasks: create_containers.yaml
-  tags:
-  - create_containers
-  - install_additional_services
-
 - name: setup-hosts
   become: yes
   command: /usr/local/bin/openstack-ansible setup-hosts.yml
@@ -56,6 +51,11 @@
   tags:
     - first_run
     - setup_openstack
+
+- include_tasks: create_containers.yaml
+  tags:
+  - create_containers
+  - install_additional_services
 
 - include_tasks: additional_services.yaml
   tags:
