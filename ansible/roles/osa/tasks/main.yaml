@@ -21,6 +21,11 @@
   tags:
   - always
 
+- include_tasks: haproxy_config.yaml
+  tags:
+    - haproxy_config
+    - install_additional_services
+
 - include_tasks: service_configs.yaml
   tags:
   - install_additional_services
@@ -66,8 +71,3 @@
     - reconfigure_services
     - reconfigure_manila
     - manila-config
-
-- include_tasks: haproxy_config.yaml
-  tags:
-    - haproxy_config
-    - install_additional_services

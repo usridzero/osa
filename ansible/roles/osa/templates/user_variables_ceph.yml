@@ -15,13 +15,15 @@ monitor_interface: "eth1" # Management network in the AIO
 public_network: "172.29.236.0/22"
 journal_size: 100
 osd_scenario: collocated
-pool_default_pg_num: 16
+pool_default_pg_num: 32
 openstack_config: true # Ceph ansible automatically creates pools & keys
 
 devices:
   - '/dev/sdc'
   - '/dev/sdd'
+  - '/dev/sde'
+  - '/dev/sdf'
 
 ceph_conf_overrides:
   global:
-    osd_pool_default_size: 1
+    osd_pool_default_size: 3
