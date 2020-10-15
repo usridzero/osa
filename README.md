@@ -12,7 +12,8 @@ all on the same workstation. It also allows for piece-part installation of servi
 ## Getting Started
 * `./lib/low/get_box.sh`
 * `vagrant plugin install tty-prompt`
-* `vagrant up` 
+* `vagrant up`
+* When selecting options to run, use **spacebar** to select and **enter** to confirm once you selected all the options you wish to run+
 
 ## Operating Operationally
 * You can ssh into an AIO via `vagrant ssh`
