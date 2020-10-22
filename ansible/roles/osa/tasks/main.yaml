@@ -47,7 +47,7 @@
   command: /usr/local/bin/openstack-ansible setup-infrastructure.yml
   vars:
     openstack_hosts_centos_mirror_url: 'http://archive.linux.duke.edu/centos/'
-    openstack_hosts_enable_yum_fastestmirror: false
+    openstack_hosts_enable_yum_fastestmirror: no
   args:
     chdir: /opt/openstack-ansible/playbooks
   tags:

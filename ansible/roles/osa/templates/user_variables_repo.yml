@@ -1,0 +1,23 @@
+---
+# The default repo: download.fedoraproject.org URL redirects to 
+# random mirror repos that do not have the necessary package it needs 
+# to finish setting up the hosts or infrastructure. These overrides
+# eliminate the HTTP 404 File Not Found Error that breaks the playbook
+#
+# Date: October 22, 2020
+# Authors: Mitul Patel, Omar Pagan, Brian Maher, Mark Worley
+#
+# Repo Overrides
+# override openstack_hosts ansible role variables
+openstack_hosts_centos_mirror_url: 'http://archive.linux.duke.edu/centos/'
+
+# override lxc_hosts ansible role variables
+lxc_centos_epel_mirror: 'http://archive.linux.duke.edu/epel'
+lxc_centos_epel_gpg_key: 'http://archive.linux.duke.edu/epel/RPM-GPG-KEY-EPEL-7'
+
+# override repo_server ansible role variables
+repo_centos_epel_mirror: 'http://archive.linux.duke.edu/epel'
+repo_centos_epel_key: 'http://archive.linux.duke.edu/epel/RPM-GPG-KEY-EPEL-7'
+
+# variables to fix the centos mirrors and yum:
+#openstack_hosts_enable_yum_fastestmirror: false
