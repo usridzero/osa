@@ -41,6 +41,13 @@
     path: /etc/yum.conf
     regexp: '^http_caching='
     line: http_caching=packages
+
+- name: test-hack
+  become: yes
+  lineinfile:
+    path: /etc/yum/pluginconf.d/fastestmirror.conf
+    regexp: '^enabled'
+    line: enabled=0
     
 - name: Install dependencies
   become: yes
