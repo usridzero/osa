@@ -4,10 +4,22 @@ manila_protocols:
   - CIFS
   - CEPHFS
 
-manila_backends:
-  generic1:
-    driver_handles_share_servers: False
-    share_backend_name: generic1
-    share_driver: manila.share.drivers.generic.GenericShareDriver
+# manila_backend_rbd_inuse: True
 
-manila_default_store: generic1
+manila_backends:
+  cephfsnfs1:
+    ganesha_rados_store_enable: True
+    ganesha_rados_store_pool_name: cephfs_data
+    driver_handles_share_servers: False
+    service_instance_user: manila
+    service_instance_password: "{{ manila_service_password }}"
+    share_backend_name: CEPHFSNFS1
+    share_driver: manila.share.drivers.cephfs.driver.CephFSDriver
+    cephfs_protocol_helper_type: NFS
+    cephfs_conf_path: /etc/ceph/ceph.conf
+    cephfs_auth_id: manila
+    cephfs_cluster_name: ceph
+    cephfs_enable_snapshots: False
+    cephfs_ganesha_server_is_remote: False
+
+manila_default_store: cephfsnfs1

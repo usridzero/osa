@@ -33,9 +33,6 @@
 - name: setup-hosts
   become: yes
   command: /usr/local/bin/openstack-ansible setup-hosts.yml
-  vars:
-    openstack_hosts_centos_mirror_url: 'http://archive.linux.duke.edu/centos/'
-    openstack_hosts_enable_yum_fastestmirror: false
   args:
     chdir: /opt/openstack-ansible/playbooks
   tags:
@@ -45,9 +42,6 @@
 - name: setup-infrastructure
   become: yes
   command: /usr/local/bin/openstack-ansible setup-infrastructure.yml
-  vars:
-    openstack_hosts_centos_mirror_url: 'http://archive.linux.duke.edu/centos/'
-    openstack_hosts_enable_yum_fastestmirror: no
   args:
     chdir: /opt/openstack-ansible/playbooks
   tags:
@@ -64,12 +58,6 @@
     - setup_openstack
 
 - include_tasks: create_containers.yaml
-  vars:
-    baseurl: 'http://archive.linux.duke.edu/epel/'
-    openstack_hosts_centos_mirror_url: 'http://archive.linux.duke.edu/epel/'
-    openstack_hosts_enable_yum_fastestmirror: no
-    lxc_centos_epel_mirror: 'http://archive.linux.duke.edu/epel/'
-    lxc_centos_epel_gpg_key: 'http://archive.linux.duke.edu/epel/RPM-GPG-KEY-EPEL-7'
   tags:
   - create_containers
   - install_additional_services
